@@ -27,16 +27,16 @@ retry — and delegating all rendering to Playwright.
 
 ## What M0 does
 
-| | |
-|---|---|
-| **Input** | one URL, optional `capture.config.ts` |
-| **Pages** | an explicit `pages` list (auto-discovery is M1) |
-| **Viewports** | `mobile` 390x844@3x, `tablet` 834x1112@2x, `laptop`, `desktop`, or custom |
-| **Capture** | full-page or viewport PNG, one isolated context per viewport, concurrent |
+|               |                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| **Input**     | one URL, optional `capture.config.ts`                                                       |
+| **Pages**     | an explicit `pages` list (auto-discovery is M1)                                             |
+| **Viewports** | `mobile` 390x844@3x, `tablet` 834x1112@2x, `laptop`, `desktop`, or custom                   |
+| **Capture**   | full-page or viewport PNG, one isolated context per viewport, concurrent                    |
 | **Stabilize** | network idle, fonts ready, images decoded, DOM quiescence, animation freeze, scroll warm-up |
-| **Validate** | rejects blank frames, HTTP errors, and framework error overlays |
-| **Retry** | 3 attempts with an escalating wait strategy; retains a trace on final failure |
-| **Package** | `manifest.json`, `logs/run.log.json`, `.latest` pointer |
+| **Validate**  | rejects blank frames, HTTP errors, and framework error overlays                             |
+| **Retry**     | 3 attempts with an escalating wait strategy; retains a trace on final failure               |
+| **Package**   | `manifest.json`, `logs/run.log.json`, `.latest` pointer                                     |
 
 ## Commands
 
@@ -68,13 +68,13 @@ captures/
 
 ## Exit codes
 
-| Code | Meaning |
-|---|---|
-| 0 | succeeded, or failed under `--max-fail-rate` (default 0.5) |
-| 1 | failure rate above the threshold |
-| 2 | wrong command line |
-| 3 | invalid config |
-| 4 | environment cannot capture (no Chromium) |
+| Code | Meaning                                                    |
+| ---- | ---------------------------------------------------------- |
+| 0    | succeeded, or failed under `--max-fail-rate` (default 0.5) |
+| 1    | failure rate above the threshold                           |
+| 2    | wrong command line                                         |
+| 3    | invalid config                                             |
+| 4    | environment cannot capture (no Chromium)                   |
 
 With `--json`, stdout carries only the JSON summary and all progress goes to
 stderr, so `capturekit run --json | jq` works in a pipeline.

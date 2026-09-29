@@ -6,25 +6,27 @@
  * user can name in config; anything else must be spelled out as an object.
  */
 export type Device = {
-  name: string
-  width: number
-  height: number
-  deviceScaleFactor: number
-  mobile: boolean
-}
+  name: string;
+  width: number;
+  height: number;
+  deviceScaleFactor: number;
+  mobile: boolean;
+};
 
-export const DEVICES: Record<string, Device> = {
-  mobile: { name: "mobile", width: 390, height: 844, deviceScaleFactor: 3, mobile: true },
-  tablet: { name: "tablet", width: 834, height: 1112, deviceScaleFactor: 2, mobile: true },
-  laptop: { name: "laptop", width: 1440, height: 900, deviceScaleFactor: 2, mobile: false },
-  desktop: { name: "desktop", width: 1920, height: 1080, deviceScaleFactor: 2, mobile: false },
-}
+export type DeviceName = 'mobile' | 'tablet' | 'laptop' | 'desktop';
 
-export const DEFAULT_VIEWPORTS = ["mobile", "tablet", "desktop"] as const
+export const DEVICES: Record<DeviceName, Device> = {
+  mobile: { name: 'mobile', width: 390, height: 844, deviceScaleFactor: 3, mobile: true },
+  tablet: { name: 'tablet', width: 834, height: 1112, deviceScaleFactor: 2, mobile: true },
+  laptop: { name: 'laptop', width: 1440, height: 900, deviceScaleFactor: 2, mobile: false },
+  desktop: { name: 'desktop', width: 1920, height: 1080, deviceScaleFactor: 2, mobile: false },
+};
 
-export function isDeviceName(value: string): value is keyof typeof DEVICES {
-  return Object.hasOwn(DEVICES, value)
+export const DEFAULT_VIEWPORTS = ['mobile', 'tablet', 'desktop'] as const;
+
+export function isDeviceName(value: string): value is DeviceName {
+  return Object.hasOwn(DEVICES, value);
 }
 
 /** Names a user is allowed to type into `viewports: [...]`. */
-export const DEVICE_NAMES = Object.keys(DEVICES)
+export const DEVICE_NAMES = Object.keys(DEVICES) as DeviceName[];

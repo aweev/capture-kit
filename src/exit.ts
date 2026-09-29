@@ -16,9 +16,9 @@ export const ExitCode = {
   Config: 3,
   Environment: 4,
   Interrupted: 130,
-} as const
+} as const;
 
-export type ExitCodeValue = (typeof ExitCode)[keyof typeof ExitCode]
+export type ExitCodeValue = (typeof ExitCode)[keyof typeof ExitCode];
 
 /**
  * Every user-facing failure is one of these, so the CLI top level can print a
@@ -26,18 +26,18 @@ export type ExitCodeValue = (typeof ExitCode)[keyof typeof ExitCode]
  * fail silently.
  */
 export class CaptureKitError extends Error {
-  code: ExitCodeValue
-  hint: string | undefined
+  code: ExitCodeValue;
+  hint: string | undefined;
 
   constructor(message: string, code: ExitCodeValue, hint?: string) {
-    super(message)
-    this.name = "CaptureKitError"
-    this.code = code
-    this.hint = hint
+    super(message);
+    this.name = 'CaptureKitError';
+    this.code = code;
+    this.hint = hint;
   }
 }
 
 /** Type guard used by run/init/doctor to bail with a code. */
 export function isCaptureKitError(err: unknown): err is CaptureKitError {
-  return err instanceof CaptureKitError
+  return err instanceof CaptureKitError;
 }

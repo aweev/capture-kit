@@ -43,10 +43,10 @@ self-describing, so Dino never parses filenames.
       "contentHeight": 1416,
       "attempts": 1,
       "durationMs": 4120,
-      "strategy": "standard waits"
-    }
+      "strategy": "standard waits",
+    },
   ],
-  "failures": []
+  "failures": [],
 }
 ```
 
@@ -66,14 +66,14 @@ Authorization: Bearer dino_<api key>
 
 Dino's side of the mapping is thin because the models already align:
 
-| manifest | Dino |
-|---|---|
-| `assets[].type: "screenshot"` | `ProjectFile.type: "image"` |
-| `assets[].path` + bytes | upload to the private bucket at `projects/{id}/{assetId}/{filename}` |
-| `assets[].page` + `viewport` | `caption`, e.g. `/pricing — desktop` |
-| `assets[].contentHeight` | `ProjectFile` metadata for tall captures |
-| `gitRef`, `target` | `Project.description`, or a version title |
-| run folder name | snapshot/version label |
+| manifest                      | Dino                                                                 |
+| ----------------------------- | -------------------------------------------------------------------- |
+| `assets[].type: "screenshot"` | `ProjectFile.type: "image"`                                          |
+| `assets[].path` + bytes       | upload to the private bucket at `projects/{id}/{assetId}/{filename}` |
+| `assets[].page` + `viewport`  | `caption`, e.g. `/pricing — desktop`                                 |
+| `assets[].contentHeight`      | `ProjectFile` metadata for tall captures                             |
+| `gitRef`, `target`            | `Project.description`, or a version title                            |
+| run folder name               | snapshot/version label                                               |
 
 Rules that protect Dino's core loop:
 
@@ -92,14 +92,14 @@ capturekit's side is one publisher adapter, alongside the folder adapter it
 already has:
 
 ```ts
-publish: [{ type: "dino", apiKey: "DINO_API_KEY" }]
+publish: [{ type: 'dino', apiKey: 'DINO_API_KEY' }];
 ```
 
 ## What Dino gets that it could not produce alone
 
 Dino reviews assets people upload. capturekit fills the gap in Dino's own feature
 list ("screenshot / screen-recording attachments", "video transcoding +
-posters") from the opposite direction: the site *is* the asset source. A
+posters") from the opposite direction: the site _is_ the asset source. A
 freelancer captures their live project, imports it, and gets a share link with
 pinned comments on the exact pixel of a pricing table — without opening a
 screenshot tool.

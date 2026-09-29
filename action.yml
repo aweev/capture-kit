@@ -1,0 +1,146 @@
+name: 'Capturekit'
+description: 'Autonomous visual capture: screenshots across viewports with a PR comment. Boots your app or targets a preview URL.'
+author: 'capturekit'
+
+inputs:
+  url:
+    description: 'Target URL to capture. Omit when start-command boots the app and target is in capture.config.ts.'
+    required: false
+    default: ''
+  start-command:
+    description: 'Shell command that boots the app (uses the `start` command instead of `run`).'
+    required: false
+    default: ''
+  wait-on:
+    description: 'Health URL to poll until the app is reachable (with start-command).'
+    required: false
+    default: ''
+  config:
+    description: 'Path to a capture config file.'
+    required: false
+    default: ''
+  pages:
+    description: 'Comma-separated paths, e.g. /,/pricing.'
+    required: false
+    default: ''
+  viewports:
+    description: 'Space-separated device profiles, e.g. "mobile desktop".'
+    required: false
+    default: ''
+  out:
+    description: 'Output root for run folders.'
+    required: false
+    default: 'captures'
+  capturekit-version:
+    description: 'capturekit npm version to install (e.g. latest, 0.0.1).'
+    required: false
+    default: 'latest'
+  node-version:
+    description: 'Node version for setup-node.'
+    required: false
+    default: '23.x'
+  artifact-name:
+    description: 'Name of the uploaded run artifact. Empty skips the upload.'
+    required: false
+    default: 'visual-capture'
+  comment:
+    description: 'Post/update a single PR comment with the results (pull_request events only).'
+    required: false
+    default: 'true'
+  preview-url:
+    description: 'Public base URL where the gallery is hosted; enables inline thumbnails in the PR comment.'
+    required: false
+    default: ''
+  github-token:
+    description: 'Token used to post the PR comment.'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  run-dir:
+    description: 'Path of the capture run folder.'
+    value: ${{ steps.capture.outputs.run-dir }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install Playwright Chromium
+      shell: bash
+      run: |
+        npm i -g "capturekit@${{ inputs.capturekit-version }}" --no-audit --no-fund
+        npx -y "playwright@1.63.0" install chromium --with-deps
+
+    - name: Capture
+      id: capture
+      shell: bash
+      env:
+        CK_URL: ${{ inputs.url }}
+        CK_START_COMMAND: ${{ inputs.start-command }}
+        CK_WAIT_ON: ${{ inputs.wait-on }}
+        CK_CONFIG: ${{ inputs.config }}
+        CK_PAGES: ${{ inputs.pages }}
+        CK_VIEWPORTS: ${{ inputs.viewports }}
+        CK_OUT: ${{ inputs.out }}
+      run: |
+        ARGS=()
+        if [ -n "$CK_CONFIG" ]; then ARGS+=(--config "$CK_CONFIG"); fi
+        if [ -n "$CK_START_COMMAND" ]; then ARGS+=(--start-command "$CK_START_COMMAND"); fi
+        if [ -n "$CK_WAIT_ON" ]; then ARGS+=(--wait-on "$CK_WAIT_ON"); fi
+        if [ -n "$CK_PAGES" ]; then ARGS+=(--pages "$CK_PAGES"); fi
+        if [ -n "$CK_VIEWPORTS" ]; then ARGS+=(--viewport $CK_VIEWPORTS); fi
+        ARGS+=(--out "$CK_OUT" --export-zip --json)
+        CMD=run
+        if [ -n "$CK_START_COMMAND" ]; then CMD=start; fi
+        if [ -n "$CK_URL" ]; then
+          OUT=$(capturekit "$CMD" "$CK_URL" "${ARGS[@]}")
+        else
+          OUT=$(capturekit "$CMD" "${ARGS[@]}")
+        fi
+        echo "$OUT"
+        RUN_DIR=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',c=>s+=c).on('end',()=>console.log(JSON.parse(s).runDir))")
+        echo "run-dir=$RUN_DIR" >> "$GITHUB_OUTPUT"
+
+    - name: Upload run artifact
+      if: inputs.artifact-name != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ steps.capture.outputs.run-dir }}
+        retention-days: 14
+
+    - name: PR comment
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      env:
+        RUN_DIR: ${{ steps.capture.outputs.run-dir }}
+        PREVIEW_URL: ${{ inputs.preview-url }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          const runDir = process.env.RUN_DIR;
+          const marker = '<!-- capturekit: visual capture -->';
+          let body = fs.readFileSync(path.join(runDir, 'pr-comment.md'), 'utf8');
+          const preview = (process.env.PREVIEW_URL || '').replace(/\/+$/, '');
+          if (preview) {
+            // Turn asset code spans into inline thumbnails hosted at the preview URL.
+            body = body.replaceAll(
+              /`((screenshots\/[^`]+\.(?:png|jpe?g|webp|gif)))`/gi,
+              `![$1](${preview}/$1)`,
+            );
+          }
+          const { owner, repo } = context.repo;
+          const issue_number = context.issue.number;
+          const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number, per_page: 100 });
+          const existing = comments.find((c) => (c.body || '').includes(marker));
+          if (existing) {
+            await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+          } else {
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });
+          }

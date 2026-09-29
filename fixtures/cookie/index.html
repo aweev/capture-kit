@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cookie banner &mdash; Capturekit Fixture</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+      }
+      h1 {
+        padding: 2rem 1.5rem 0;
+      }
+      main {
+        padding: 1.5rem;
+      }
+      /* The banner is deliberately classless and labelled by role only, so the
+         heuristic library (not just a hardcoded selector list) has to catch it. */
+      #cookie-banner {
+        position: fixed;
+        inset: auto 0 0 0;
+        background: #101c34;
+        color: #fff;
+        padding: 1rem 1.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+    </nav>
+    <h1>Cookie banner</h1>
+    <main>
+      <p>
+        A page whose banner must be dismissed before the capture is usable (FR-15). The rest of the
+        content is long enough that a fixed banner would otherwise cover it in a full-page shot.
+      </p>
+    </main>
+    <div id="cookie-banner" role="dialog" aria-label="cookie consent">
+      <span>We use cookies.</span>
+      <button type="button" id="accept">Accept all</button>
+    </div>
+    <script>
+      document.getElementById('accept').addEventListener('click', () => {
+        document.getElementById('cookie-banner').remove();
+      });
+    </script>
+  </body>
+</html>

@@ -20,10 +20,10 @@ must be valid before capturekit is installed as a package in that project.
 
 ```ts
 export default {
-  target: "http://localhost:3000",
-  pages: ["/", "/pricing"],
-  viewports: ["mobile", "tablet", "desktop"],
-}
+  target: 'http://localhost:3000',
+  pages: ['/', '/pricing'],
+  viewports: ['mobile', 'tablet', 'desktop'],
+};
 ```
 
 ## Schema
@@ -37,7 +37,7 @@ unknown keys are a config error (exit 3), not a silent ignore, because a typo in
 Absolute http/https URL. The base that `pages` paths resolve against.
 
 ```ts
-target: "https://preview.example.com"
+target: 'https://preview.example.com';
 ```
 
 ### outDir
@@ -54,18 +54,15 @@ target: "https://preview.example.com"
 
 `["mobile", "tablet", "desktop"]`. Names or custom objects:
 
-| name | CSS px | DPR | mobile |
-|---|---|---|---|
-| `mobile` | 390 x 844 | 3 | yes |
-| `tablet` | 834 x 1112 | 2 | yes |
-| `laptop` | 1440 x 900 | 2 | no |
-| `desktop` | 1920 x 1080 | 2 | no |
+| name      | CSS px      | DPR | mobile |
+| --------- | ----------- | --- | ------ |
+| `mobile`  | 390 x 844   | 3   | yes    |
+| `tablet`  | 834 x 1112  | 2   | yes    |
+| `laptop`  | 1440 x 900  | 2   | no     |
+| `desktop` | 1920 x 1080 | 2   | no     |
 
 ```ts
-viewports: [
-  "desktop",
-  { name: "ultrawide", width: 3440, height: 1440, deviceScaleFactor: 1 },
-]
+viewports: ['desktop', { name: 'ultrawide', width: 3440, height: 1440, deviceScaleFactor: 1 }];
 ```
 
 A custom profile that reuses a built-in name overrides it for that run. Names
@@ -108,16 +105,16 @@ browser is shared; isolation comes from a fresh context per job.
 
 ## CLI overrides
 
-| flag | sets |
-|---|---|
-| `[url]` | `target` |
-| `--pages /,/pricing` | `pages` |
-| `--viewport mobile desktop` | `viewports` |
-| `--viewport-only` | `capture.fullPage = false` |
-| `--out <dir>` | `outDir` |
-| `--concurrency <n>` | `concurrency` |
-| `--timeout <ms>` | `stabilize.timeoutMs` |
-| `--max-fail-rate <f>` | exit-code threshold, not a config field |
+| flag                        | sets                                    |
+| --------------------------- | --------------------------------------- |
+| `[url]`                     | `target`                                |
+| `--pages /,/pricing`        | `pages`                                 |
+| `--viewport mobile desktop` | `viewports`                             |
+| `--viewport-only`           | `capture.fullPage = false`              |
+| `--out <dir>`               | `outDir`                                |
+| `--concurrency <n>`         | `concurrency`                           |
+| `--timeout <ms>`            | `stabilize.timeoutMs`                   |
+| `--max-fail-rate <f>`       | exit-code threshold, not a config field |
 
 ## Not configurable yet (M1+)
 

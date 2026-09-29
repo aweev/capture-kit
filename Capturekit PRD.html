@@ -1,0 +1,1330 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <style>
+      :root {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+    </style>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --md-bg: #fff;
+        --md-text: rgba(0, 0, 0, 0.8);
+        --md-muted: rgba(0, 0, 0, 0.6);
+        --md-fill: rgba(0, 0, 0, 0.04);
+        --md-fill-strong: rgba(0, 0, 0, 0.06);
+        --md-rule: rgba(0, 0, 0, 0.1);
+        --md-rule-strong: rgba(0, 0, 0, 0.16);
+        --md-link: hsl(210 100% 45%);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:where(:not([data-theme='light'])) {
+          --md-bg: #0d0d0d;
+          --md-text: rgba(255, 255, 255, 0.85);
+          --md-muted: rgba(255, 255, 255, 0.6);
+          --md-fill: rgba(255, 255, 255, 0.06);
+          --md-fill-strong: rgba(255, 255, 255, 0.09);
+          --md-rule: rgba(255, 255, 255, 0.14);
+          --md-rule-strong: rgba(255, 255, 255, 0.22);
+          --md-link: hsl(210 100% 72%);
+        }
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+        --md-bg: #0d0d0d;
+        --md-text: rgba(255, 255, 255, 0.85);
+        --md-muted: rgba(255, 255, 255, 0.6);
+        --md-fill: rgba(255, 255, 255, 0.06);
+        --md-fill-strong: rgba(255, 255, 255, 0.09);
+        --md-rule: rgba(255, 255, 255, 0.14);
+        --md-rule-strong: rgba(255, 255, 255, 0.22);
+        --md-link: hsl(210 100% 72%);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      @media print {
+        :root,
+        :root[data-theme='dark'] {
+          color-scheme: light;
+          --md-bg: #fff;
+          --md-text: rgba(0, 0, 0, 0.8);
+          --md-muted: rgba(0, 0, 0, 0.6);
+          --md-fill: rgba(0, 0, 0, 0.04);
+          --md-fill-strong: rgba(0, 0, 0, 0.06);
+          --md-rule: rgba(0, 0, 0, 0.1);
+          --md-rule-strong: rgba(0, 0, 0, 0.16);
+          --md-link: hsl(210 100% 45%);
+        }
+      }
+      body {
+        background: var(--md-bg);
+        color: var(--md-text);
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font:
+          14px/1.55 -apple-system,
+          BlinkMacSystemFont,
+          'SF Pro',
+          'Segoe UI',
+          sans-serif;
+        overflow-wrap: break-word;
+      }
+      body > :first-child {
+        margin-top: 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 6px 0 0;
+        line-height: 1.25;
+        font-weight: 600;
+        text-wrap: balance;
+      }
+      h1 {
+        font-size: 1.35em;
+      }
+      h2 {
+        font-size: 1.15em;
+        color: var(--md-muted);
+      }
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: 1em;
+      }
+      p,
+      ul,
+      ol,
+      blockquote,
+      table,
+      pre,
+      hr {
+        margin: 0;
+      }
+      strong {
+        font-weight: 600;
+      }
+      a {
+        color: var(--md-link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      ul,
+      ol {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-left: 22px;
+      }
+      ul {
+        list-style: disc;
+      }
+      ol {
+        list-style: decimal;
+      }
+      :is(li, td, th) > * + :is(p, ul, ol, blockquote) {
+        margin-top: 6px;
+      }
+      blockquote {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-left: 2px solid var(--md-rule);
+        padding-left: 10px;
+        color: var(--md-muted);
+      }
+      :not(pre) > code {
+        background: var(--md-fill);
+        padding: 1px 3px;
+        border-radius: 4px;
+        font:
+          0.92em 'SF Mono',
+          ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      a > code {
+        background: none;
+        color: inherit;
+      }
+      pre {
+        background: var(--md-fill);
+        padding: 10px 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font:
+          12px/1.5 'SF Mono',
+          ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        margin-block: 4px;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font: inherit;
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 2px;
+        font: inherit;
+      }
+      th,
+      td {
+        padding: 6px 8px;
+        border-radius: 3px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--md-fill-strong);
+        font-weight: 600;
+      }
+      td {
+        background: var(--md-fill);
+      }
+      :is(th, td) :not(pre) > code {
+        background: transparent;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--md-rule-strong);
+        margin-block: 10px;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Capturekit: Product Requirements Document</h1>
+    <p>
+      <strong>Version:</strong> 1.0 | <strong>Date:</strong> 2026-09-29 |
+      <strong>Status:</strong> Draft for build <strong>Working title:</strong> Capturekit
+      (autonomous visual capture for shipped software)
+    </p>
+    <hr />
+    <h2>1. Executive Summary</h2>
+    <p>
+      Capturekit is a CLI-first, CI-native tool that turns any running web project (localhost,
+      preview deploy, or production URL) into a complete, current
+      <strong>visual asset pack</strong>: multi-viewport screenshots, walkthrough videos, GIFs, and
+      a shareable gallery, with no manual steps after initial setup.
+    </p>
+    <p>
+      The product thesis:
+      <strong
+        >visual material is needed on every release but is skipped because it is tedious.</strong
+      >
+      Capturekit removes the tedium by making capture <em>autonomous</em>: it discovers pages,
+      stabilizes them, handles overlays and animations, captures in parallel across devices, retries
+      on flakiness, and publishes a gallery, all triggered by a single command or a git event.
+    </p>
+    <p>
+      <strong>Core promise:</strong> <code>capturekit run</code> on any URL yields a client-ready
+      gallery in under 2 minutes, with zero per-page scripting for the common case.
+    </p>
+    <hr />
+    <h2>2. Problem Statement</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pain</th>
+          <th>Who feels it</th>
+          <th>Current workaround</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Portfolio and case-study visuals go stale</td>
+          <td>Freelancers, agencies</td>
+          <td>Manual screenshots, browser resize</td>
+          <td>Hours per release, inconsistent quality</td>
+        </tr>
+        <tr>
+          <td>Clients cannot see progress without a dev environment</td>
+          <td>Agencies, consultants</td>
+          <td>Calls, ad-hoc screen recordings</td>
+          <td>Delayed feedback, extra meetings</td>
+        </tr>
+        <tr>
+          <td>PR reviewers cannot see UI changes</td>
+          <td>Product teams</td>
+          <td>&quot;Pull the branch and run it&quot;</td>
+          <td>Slower reviews</td>
+        </tr>
+        <tr>
+          <td>Bug reports lack reproducible visuals</td>
+          <td>QA, support</td>
+          <td>Phone screenshots, Loom</td>
+          <td>Ambiguity</td>
+        </tr>
+        <tr>
+          <td>Existing tools solve adjacent problems</td>
+          <td>Everyone</td>
+          <td>Percy/Chromatic (regression testing), Screely (single shots)</td>
+          <td>None target <em>presentation material</em>, none are autonomous end to end</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2>3. Goals and Non-Goals</h2>
+    <h3>Goals</h3>
+    <ul>
+      <li><strong>G1 Autonomy:</strong> Zero-config first run; config only to refine.</li>
+      <li>
+        <strong>G2 Fidelity:</strong> Captures look production-grade (retina, real device profiles,
+        stable frames).
+      </li>
+      <li>
+        <strong>G3 Speed:</strong> All viewports in parallel; total time close to the slowest single
+        capture.
+      </li>
+      <li>
+        <strong>G4 Determinism:</strong> Same input yields visually consistent output across runs.
+      </li>
+      <li><strong>G5 Shareability:</strong> Output is one link or one folder a client can open.</li>
+      <li><strong>G6 Integration:</strong> Runs identically locally and in CI.</li>
+    </ul>
+    <h3>Non-Goals (v1)</h3>
+    <ul>
+      <li>Visual regression diffing and baselines (Percy/Chromatic territory).</li>
+      <li>Native mobile app capture.</li>
+      <li>A hosted SaaS, accounts, or billing.</li>
+      <li>A visual editor or annotation UI.</li>
+      <li>Cross-browser matrix beyond Chromium (WebKit/Firefox are v1.x).</li>
+    </ul>
+    <hr />
+    <h2>4. Personas</h2>
+    <ol>
+      <li>
+        <strong>Freelance engineer (primary):</strong> Needs portfolio and client update visuals
+        fast. Values: speed, polish, zero babysitting.
+      </li>
+      <li>
+        <strong>Agency lead:</strong> Sends weekly progress to multiple clients. Values: consistent
+        branding, one shareable link, history.
+      </li>
+      <li>
+        <strong>Reviewer / PM:</strong> Wants previews inside PRs. Values: no setup, visible in the
+        PR thread.
+      </li>
+      <li>
+        <strong>Bug reporter:</strong> Wants a short clip of a flow. Values: one command, small
+        file.
+      </li>
+    </ol>
+    <hr />
+    <h2>5. Product Principles</h2>
+    <ol>
+      <li>
+        <strong>Autonomous by default, controllable by exception.</strong> Smart defaults do the
+        work; config overrides them.
+      </li>
+      <li>
+        <strong>Never fail silently, never fail wholly.</strong> One broken page must not sink the
+        run; every failure is reported with a reason and a retained trace.
+      </li>
+      <li>
+        <strong>Boring core, sharp edges only where valuable.</strong> Playwright does capture; we
+        own orchestration, stabilization, and packaging.
+      </li>
+      <li>
+        <strong>Outputs are artifacts, not logs.</strong> Every run produces a versioned,
+        self-describing folder.
+      </li>
+      <li><strong>Local-first.</strong> No data leaves the machine unless the user publishes.</li>
+    </ol>
+    <hr />
+    <h2>6. Functional Requirements</h2>
+    <p>
+      Priority: <strong>P0</strong> = MVP, <strong>P1</strong> = client-ready release,
+      <strong>P2</strong> = later.
+    </p>
+    <h3>6.1 Discovery (the autonomy engine)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-1</td>
+          <td>
+            Accept a single URL and auto-discover pages via <code>sitemap.xml</code>, then robots
+            hints, then same-origin link crawl (depth and count limits configurable, default depth
+            2, max 20 pages)
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-2</td>
+          <td>
+            Route-source adapters: read routes from Next.js/Nuxt/SvelteKit/Astro/React Router build
+            manifests or file-system routing when a project path is supplied
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-3</td>
+          <td>
+            Deduplicate parameterized routes (<code>/post/1</code>, <code>/post/2</code>) by URL
+            pattern; capture one representative
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-4</td>
+          <td>
+            Page ranking: prioritize home, top-nav destinations, and pages by inbound link count
+            when the cap is hit
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-5</td>
+          <td>Explicit include/exclude globs override discovery</td>
+          <td>P0</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.2 Capture</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-6</td>
+          <td>
+            Built-in device profiles: mobile (iPhone), tablet (iPad), laptop, desktop; custom
+            width/height/DPR supported
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-7</td>
+          <td>
+            One browser, one isolated context per viewport, executed concurrently with a bounded
+            worker pool (default: <code>min(cores, 4)</code>)
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-8</td>
+          <td>
+            Screenshot modes: viewport, full-page, element (by selector), and
+            &quot;above-the-fold&quot;
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-9</td>
+          <td>
+            Formats: PNG, WebP, JPEG (quality configurable); optional device-frame mockups (browser
+            chrome / phone bezel)
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-10</td>
+          <td>
+            Dark/light scheme capture via <code>prefers-color-scheme</code>; optional reduced-motion
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-11</td>
+          <td>Per-page and per-viewport overrides in config</td>
+          <td>P0</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.3 Stabilization (what makes it trustworthy)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-12</td>
+          <td>
+            <strong>Ready detection:</strong> wait for network idle, fonts loaded
+            (<code>document.fonts.ready</code>), images decoded, and DOM mutation quiescence (no
+            mutations for N ms)
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-13</td>
+          <td>
+            <strong>Lazy-content trigger:</strong> auto-scroll to bottom and back to fire
+            intersection observers before full-page capture
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-14</td>
+          <td>
+            <strong>Animation control:</strong> inject CSS to disable transitions/animations and
+            pause videos/carousels; optional &quot;settle&quot; mode that waits instead
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-15</td>
+          <td>
+            <strong>Overlay handling:</strong> auto-dismiss cookie banners, chat widgets, and
+            newsletter modals via a maintained selector/heuristic library; user-extensible
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-16</td>
+          <td>
+            <strong>Determinism controls:</strong> freeze time (<code>page.clock</code>), seed
+            <code>Math.random</code>, mask/blur dynamic regions by selector
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-17</td>
+          <td>
+            <strong>Self-healing retry:</strong> on timeout, blank frame, or layout shift above
+            threshold, retry with escalated waiting strategy (up to 3 attempts), then record failure
+            with trace
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-18</td>
+          <td>
+            <strong>Blank/broken frame detector:</strong> reject captures that are near-uniform,
+            error pages (HTTP 4xx/5xx, framework error overlays), or contain console-error banners
+          </td>
+          <td>P1</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.4 Video and Motion</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-19</td>
+          <td>Record one video per viewport with size matched to the viewport</td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-20</td>
+          <td>
+            Auto-generated <strong>scroll-through walkthrough</strong> for every page (smooth,
+            eased, configurable speed)
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-21</td>
+          <td>
+            Scripted <strong>flows</strong> in config: <code>click</code>, <code>fill</code>,
+            <code>hover</code>, <code>press</code>, <code>waitFor</code>, <code>scroll</code>,
+            <code>goto</code>; optional visible cursor and click ripple overlay
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-22</td>
+          <td>
+            Post-process with ffmpeg: MP4 (H.264), GIF, WebM; trim dead time; compress to size
+            budget (default under 5 MB per clip)
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-23</td>
+          <td>Optional captions and title cards from flow step names</td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-24</td>
+          <td>Contexts closed before file finalization (correctness requirement)</td>
+          <td>P0</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.5 Auth and Environment</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-25</td>
+          <td>
+            Login recipe (fill + submit + wait) that saves Playwright <code>storageState</code>,
+            reused across viewports
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-26</td>
+          <td>Secrets read from env vars; never written to output or logs</td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-27</td>
+          <td>
+            Optional <code>start</code> command: boot the app, wait for a health URL, capture, tear
+            down (makes CI trivial)
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-28</td>
+          <td>Custom headers, cookies, geolocation, locale, timezone</td>
+          <td>P1</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.6 Packaging and Output</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-29</td>
+          <td>
+            Deterministic output tree per run (see Section 9) with
+            <code>manifest.json</code> describing every asset
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-30</td>
+          <td>
+            Generated static <strong>gallery</strong> (<code>index.html</code>): responsive grid,
+            viewport tabs, lightbox, video playback, copy-link buttons; zero external dependencies
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-31</td>
+          <td>Theming: logo, colors, title, client name, footer for white-label client delivery</td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-32</td>
+          <td>
+            Export: ZIP of assets, single PDF summary, Markdown snippet for READMEs and PR comments
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-33</td>
+          <td>Run history and &quot;latest&quot; symlink; before/after slider between two runs</td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-34</td>
+          <td>Publish adapters: local folder, S3/R2, GitHub Pages, Netlify/Vercel drop</td>
+          <td>P2</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.7 Triggers and Automation</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-35</td>
+          <td>
+            CLI: <code>init</code>, <code>run</code>, <code>discover</code>, <code>doctor</code>,
+            <code>open</code>, <code>clean</code>
+          </td>
+          <td>P0</td>
+        </tr>
+        <tr>
+          <td>FR-36</td>
+          <td>Watch mode: recapture affected pages on file change (debounced)</td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-37</td>
+          <td>
+            Official <strong>GitHub Action</strong>: boots app or targets preview URL, uploads
+            artifact, posts/updates a single PR comment with thumbnails
+          </td>
+          <td>P1</td>
+        </tr>
+        <tr>
+          <td>FR-38</td>
+          <td>Webhook trigger endpoint mode for deploy hooks (Vercel, Netlify)</td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-39</td>
+          <td>Exit codes and JSON output for scripting</td>
+          <td>P0</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>6.8 AI-Assisted Layer (optional, off by default)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>Pri</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FR-40</td>
+          <td>
+            <strong>Flow synthesis:</strong> given a URL and a plain-English goal (&quot;show signup
+            and dashboard&quot;), an LLM agent explores and emits a reviewable flow config
+          </td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-41</td>
+          <td>
+            <strong>Alt text and captions:</strong> vision model generates alt text and one-line
+            descriptions per screenshot
+          </td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-42</td>
+          <td>
+            <strong>Visual QA pass:</strong> flag clipped text, overlapping elements, and horizontal
+            overflow before delivery
+          </td>
+          <td>P2</td>
+        </tr>
+        <tr>
+          <td>FR-43</td>
+          <td>
+            <strong>Client summary:</strong> generate a short &quot;what changed&quot; blurb from
+            git diff and screenshots
+          </td>
+          <td>P2</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <p>
+        AI features never run silently: they emit files the user can review, and the tool functions
+        fully without them.
+      </p>
+    </blockquote>
+    <hr />
+    <h2>7. Non-Functional Requirements</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Requirement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Performance</strong></td>
+          <td>
+            5 pages x 3 viewports (15 screenshots) in under 45 s on a 4-core laptop; adding
+            walkthrough videos under 2 min total
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Reliability</strong></td>
+          <td>
+            99% capture success on a benchmark corpus of 50 public sites; failed captures never
+            abort a run
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Determinism</strong></td>
+          <td>Two runs on unchanged content differ by less than 0.5% pixels after masking</td>
+        </tr>
+        <tr>
+          <td><strong>Resource use</strong></td>
+          <td>Peak memory under 1.5 GB at default concurrency; auto-throttle on low memory</td>
+        </tr>
+        <tr>
+          <td><strong>Portability</strong></td>
+          <td>macOS, Linux, Windows; Node 20+; Docker image for CI</td>
+        </tr>
+        <tr>
+          <td><strong>Security</strong></td>
+          <td>
+            Local-only by default; secrets redaction; no telemetry without opt-in; SSRF guard when
+            run as a service
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Accessibility</strong></td>
+          <td>Gallery meets WCAG 2.1 AA (keyboard nav, alt text, contrast)</td>
+        </tr>
+        <tr>
+          <td><strong>Observability</strong></td>
+          <td>Structured logs, per-capture timing, Playwright trace retained on failure</td>
+        </tr>
+        <tr>
+          <td><strong>Install</strong></td>
+          <td>
+            <code>npx capturekit</code> works with no global install; browsers auto-provisioned by
+            <code>doctor</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2>8. System Architecture</h2>
+    <pre class="mermaid">
+flowchart LR
+  A[CLI / GitHub Action] --&gt; B[Config Loader&lt;br/&gt;+ Zod validation]
+  B --&gt; C[Discovery Engine]
+  C --&gt; D[Job Planner&lt;br/&gt;page x viewport x mode]
+  D --&gt; E[Worker Pool&lt;br/&gt;p-limit]
+  E --&gt; F[Browser Contexts&lt;br/&gt;Playwright]
+  F --&gt; G[Stabilizer&lt;br/&gt;ready, scroll, freeze, overlays]
+  G --&gt; H[Capture&lt;br/&gt;screenshot / video]
+  H --&gt; I{Validator&lt;br/&gt;blank? error? shift?}
+  I -- fail --&gt; J[Retry Ladder]
+  J --&gt; G
+  I -- pass --&gt; K[Post-Processor&lt;br/&gt;ffmpeg, sharp]
+  K --&gt; L[Packager&lt;br/&gt;manifest + gallery]
+  L --&gt; M[Publishers&lt;br/&gt;folder, PR comment, S3]
+</pre>
+    <p><strong>Key design decisions</strong></p>
+    <ul>
+      <li>
+        <strong>Language/stack:</strong> TypeScript, Node 20, Playwright,
+        <code>sharp</code> (images), <code>ffmpeg-static</code> (video), Zod (config),
+        <code>commander</code> (CLI), <code>p-limit</code> (concurrency).
+      </li>
+      <li>
+        <strong>Job model:</strong> each capture is an idempotent job
+        <code>(page, viewport, scheme, mode)</code> with its own retry state, enabling parallelism
+        and partial reruns.
+      </li>
+      <li>
+        <strong>Retry ladder:</strong> attempt 1 = standard waits; attempt 2 = longer settle +
+        animation kill + scroll warm-up; attempt 3 = reload with cache cleared +
+        <code>domcontentloaded</code> fallback. Each rung is logged.
+      </li>
+      <li>
+        <strong>Plugin surface (P2):</strong> <code>discoverer</code>, <code>stabilizer</code>,
+        <code>publisher</code>, and <code>postprocessor</code> hooks so extensions never touch the
+        core.
+      </li>
+    </ul>
+    <hr />
+    <h2>9. Output Specification</h2>
+    <pre><code>captures/
+  2026-09-29T14-32-10_a1b2c3/
+    manifest.json
+    index.html                # self-contained gallery
+    screenshots/
+      home/
+        mobile.webp  tablet.webp  desktop.webp
+      pricing/ ...
+    videos/
+      home-desktop.mp4  home-mobile.gif
+    logs/
+      run.log.json
+      traces/                 # only for failures
+  latest -&gt; 2026-09-29T14-32-10_a1b2c3
+</code></pre>
+    <p>
+      <strong><code>manifest.json</code> (abridged)</strong>
+    </p>
+    <pre><code class="language-json">{
+  &#34;runId&#34;: &#34;a1b2c3&#34;,
+  &#34;startedAt&#34;: &#34;2026-09-29T14:32:10Z&#34;,
+  &#34;target&#34;: &#34;http://localhost:3000&#34;,
+  &#34;gitRef&#34;: &#34;feat/checkout@9f3c1d2&#34;,
+  &#34;summary&#34;: { &#34;planned&#34;: 15, &#34;succeeded&#34;: 15, &#34;retried&#34;: 2, &#34;failed&#34;: 0, &#34;durationMs&#34;: 38210 },
+  &#34;assets&#34;: [
+    { &#34;page&#34;: &#34;/&#34;, &#34;viewport&#34;: &#34;mobile&#34;, &#34;type&#34;: &#34;screenshot&#34;,
+      &#34;path&#34;: &#34;screenshots/home/mobile.webp&#34;, &#34;width&#34;: 390, &#34;height&#34;: 844, &#34;attempts&#34;: 1 }
+  ]
+}
+</code></pre>
+    <hr />
+    <h2>10. Configuration Schema (<code>capture.config.ts</code>)</h2>
+    <pre><code class="language-ts">export default defineConfig({
+  target: &#34;http://localhost:3000&#34;,
+  start: { command: &#34;npm run dev&#34;, waitOn: &#34;http://localhost:3000/health&#34; },
+  discovery: { mode: &#34;auto&#34;, depth: 2, maxPages: 12, exclude: [&#34;/admin/**&#34;] },
+  viewports: [&#34;mobile&#34;, &#34;tablet&#34;, &#34;desktop&#34;],          // or custom objects
+  schemes: [&#34;light&#34;],                                    // add &#34;dark&#34;
+  capture: { fullPage: true, format: &#34;webp&#34;, frame: &#34;browser&#34; },
+  stabilize: { networkIdle: true, freezeTime: &#34;2026-01-01T00:00:00Z&#34;,
+               dismissOverlays: true, mask: [&#34;.timestamp&#34;, &#34;[data-ad]&#34;] },
+  video: { walkthrough: true, formats: [&#34;mp4&#34;, &#34;gif&#34;], maxSizeMB: 5 },
+  flows: [{
+    name: &#34;Checkout&#34;,
+    steps: [
+      { goto: &#34;/products&#34; },
+      { click: &#34;text=Add to cart&#34; },
+      { click: &#34;[data-testid=checkout]&#34; },
+      { waitFor: &#34;text=Order summary&#34; }
+    ]
+  }],
+  auth: { recipe: &#34;./auth.ts&#34;, storageState: &#34;.auth/state.json&#34; },
+  gallery: { title: &#34;Acme Redesign&#34;, client: &#34;Acme Inc.&#34;, brand: { logo: &#34;./logo.svg&#34;, accent: &#34;#0F62FE&#34; } },
+  publish: [{ type: &#34;github-pr-comment&#34; }]
+});
+</code></pre>
+    <p>Zero-config equivalent: <code>npx capturekit run http://localhost:3000</code>.</p>
+    <hr />
+    <h2>11. User Flows</h2>
+    <ol>
+      <li>
+        <strong>First run (30 seconds):</strong> <code>npx capturekit run &lt;url&gt;</code> →
+        discovery finds pages → captures 3 viewports → opens gallery. No config file.
+      </li>
+      <li>
+        <strong>Client delivery:</strong> <code>capturekit init</code> (brand, viewports) →
+        <code>capturekit run --publish s3</code> → link pasted into email.
+      </li>
+      <li>
+        <strong>PR preview:</strong> push → Action boots app → captures changed routes → PR comment
+        with thumbnails and gallery artifact.
+      </li>
+      <li>
+        <strong>Bug clip:</strong>
+        <code>capturekit run --flow ./repro.yml --video --format gif</code> → small GIF ready to
+        attach.
+      </li>
+    </ol>
+    <hr />
+    <h2>12. Success Metrics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Target</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Time from install to first gallery</td>
+          <td>Under 3 minutes</td>
+        </tr>
+        <tr>
+          <td>Zero-config success rate (pages captured correctly with no overrides)</td>
+          <td>85% or higher</td>
+        </tr>
+        <tr>
+          <td>Capture success on benchmark corpus</td>
+          <td>99%</td>
+        </tr>
+        <tr>
+          <td>Manual intervention per run after setup</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Median run time (5 pages x 3 viewports)</td>
+          <td>Under 45 s</td>
+        </tr>
+        <tr>
+          <td>Repeat usage (personal dogfooding proxy)</td>
+          <td>Runs on 100% of own project deploys within 30 days</td>
+        </tr>
+        <tr>
+          <td>If open-sourced: GitHub stars / weekly npm installs</td>
+          <td>500 / 1,000 within 6 months</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2>13. Risks and Mitigations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Risk</th>
+          <th>Likelihood</th>
+          <th>Impact</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Flaky captures erode trust</td>
+          <td>High</td>
+          <td>High</td>
+          <td>Ready-detection stack, retry ladder, validator, failure traces</td>
+        </tr>
+        <tr>
+          <td>Cookie/overlay variety is endless</td>
+          <td>High</td>
+          <td>Medium</td>
+          <td>Heuristic library + user-extensible selectors + &quot;manual mask&quot; fallback</td>
+        </tr>
+        <tr>
+          <td>Auth flows differ per site</td>
+          <td>Medium</td>
+          <td>Medium</td>
+          <td>Recipe scripts + <code>storageState</code>, documented patterns</td>
+        </tr>
+        <tr>
+          <td>Video size/encoding pain</td>
+          <td>Medium</td>
+          <td>Medium</td>
+          <td>ffmpeg presets with a size budget and two-pass encoding</td>
+        </tr>
+        <tr>
+          <td>Scope creep (diffing, dashboard, SaaS)</td>
+          <td>High</td>
+          <td>High</td>
+          <td>Non-goals enforced; only P0/P1 until CLI is dogfooded</td>
+        </tr>
+        <tr>
+          <td>Crawl abuse / hitting production hard</td>
+          <td>Low</td>
+          <td>High</td>
+          <td>Rate limiting, robots respect, default page cap, concurrency cap</td>
+        </tr>
+        <tr>
+          <td>Sensitive data in screenshots</td>
+          <td>Medium</td>
+          <td>High</td>
+          <td>Mask selectors, <code>--redact</code> mode, warn on detected emails/tokens (P1)</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2>14. Roadmap and Milestones</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Milestone</th>
+          <th>Scope</th>
+          <th>Estimate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M0: Walking skeleton</strong></td>
+          <td>CLI, config, one URL, 3 parallel viewports, PNG output</td>
+          <td>Day 1</td>
+        </tr>
+        <tr>
+          <td><strong>M1: MVP</strong></td>
+          <td>
+            Discovery (sitemap + crawl), stabilization core, retry ladder, walkthrough video +
+            ffmpeg, manifest, gallery
+          </td>
+          <td>Weekend</td>
+        </tr>
+        <tr>
+          <td><strong>M2: Client-ready</strong></td>
+          <td>
+            Device frames, dark mode, overlays, flows, auth, branding, ZIP/PDF/Markdown export
+          </td>
+          <td>Week 2</td>
+        </tr>
+        <tr>
+          <td><strong>M3: Automation</strong></td>
+          <td>GitHub Action, <code>start</code> command, PR comment, Docker image</td>
+          <td>Week 3</td>
+        </tr>
+        <tr>
+          <td><strong>M4: Intelligence (optional)</strong></td>
+          <td>Flow synthesis, alt text, visual QA, client summary</td>
+          <td>Week 4+</td>
+        </tr>
+        <tr>
+          <td><strong>M5: Reach</strong></td>
+          <td>Framework route adapters, publish targets, history, plugins, docs site</td>
+          <td>Later</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>Definition of done for MVP:</strong> runs on three real projects unassisted, benchmark
+      corpus at 95%+, gallery shared with a real client without edits.
+    </p>
+    <hr />
+    <h2>15. Acceptance Criteria (MVP)</h2>
+    <ul>
+      <li>
+        <input disabled="" type="checkbox" /> <code>npx capturekit run &lt;url&gt;</code> completes
+        with no config and produces a working gallery.
+      </li>
+      <li>
+        <input disabled="" type="checkbox" /> Three viewports execute concurrently; wall time is
+        under 1.5x the slowest single capture.
+      </li>
+      <li>
+        <input disabled="" type="checkbox" /> A page with lazy images, a cookie banner, and a CSS
+        animation produces a clean full-page screenshot.
+      </li>
+      <li>
+        <input disabled="" type="checkbox" /> A forced timeout triggers the retry ladder and is
+        recorded in the manifest.
+      </li>
+      <li>
+        <input disabled="" type="checkbox" /> A permanently broken page is reported as failed while
+        all other pages still succeed.
+      </li>
+      <li>
+        <input disabled="" type="checkbox" /> Every video is finalized (context closed) and
+        compressed under the size budget.
+      </li>
+      <li><input disabled="" type="checkbox" /> No secrets appear in logs or output.</li>
+      <li>
+        <input disabled="" type="checkbox" /> Exit code is non-zero only when configured failure
+        thresholds are exceeded.
+      </li>
+    </ul>
+    <hr />
+    <h2>16. Testing Strategy</h2>
+    <ul>
+      <li><strong>Unit:</strong> discovery parsing, config validation, URL dedupe, retry logic.</li>
+      <li>
+        <strong>Integration:</strong> fixture sites (static, SPA, lazy-load, cookie banner, auth
+        wall, infinite scroll) served locally.
+      </li>
+      <li>
+        <strong>Benchmark corpus:</strong> 50 public sites, run nightly, tracking success rate and
+        duration.
+      </li>
+      <li>
+        <strong>Determinism test:</strong> run twice, assert pixel difference under threshold.
+      </li>
+      <li><strong>Cross-platform CI:</strong> matrix on macOS, Linux, Windows.</li>
+    </ul>
+    <hr />
+    <h2>17. Open Questions</h2>
+    <ol>
+      <li>Open source from day one, or private until stable? (Recommended: open core, MIT.)</li>
+      <li>Default image format: WebP (small) vs PNG (universally safe)?</li>
+      <li>Should the gallery support password protection natively, or defer to the host?</li>
+      <li>Which AI provider abstraction for M4, and should it be bring-your-own-key only?</li>
+      <li>Is Windows a v1 target or best-effort?</li>
+    </ol>
+    <hr />
+    <h2>18. Appendix: Why This Stays Simple</h2>
+    <p>
+      The heavy lifting (rendering, recording, device emulation) is delegated to Playwright and
+      ffmpeg. Capturekit's own code is orchestration:
+      <strong>discover, plan, capture, validate, package.</strong> Autonomy comes from four small,
+      well-tested mechanisms (ready detection, the retry ladder, the validator, and heuristic
+      overlay handling) rather than from a large codebase. That is what keeps the MVP at a weekend
+      while the finished product feels like it does the work for you.
+    </p>
+
+    <!--claude-mermaid-runtime-begin:3477-->
+    <style>
+      .mermaid-diagram {
+        margin-block: 4px;
+      }
+      .mermaid-diagram svg {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+    <script src="/_runtime/mermaid-11.16.1.min.js"></script>
+    <script>
+      (function () {
+        var CFG = {
+          palettes: {
+            light: {
+              surface: '#f4efe4',
+              text: '#42392e',
+              line: '#8a7f6d',
+              border: '#7a6c52',
+              bg: '#fffdf8',
+            },
+            dark: {
+              surface: '#262b34',
+              text: '#f2f3f5',
+              line: '#a8adb8',
+              border: '#9aa4b8',
+              bg: '#1f232b',
+            },
+          },
+        };
+        if (typeof mermaid === 'undefined') return;
+        var pres = Array.prototype.slice
+          .call(document.querySelectorAll('pre.mermaid'))
+          .filter(function (p) {
+            if (p.hasAttribute('data-claude-mermaid-claimed')) return false;
+            p.setAttribute('data-claude-mermaid-claimed', '1');
+            return true;
+          });
+        if (!pres.length) return;
+        var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        var root = document.documentElement;
+        var items = pres.map(function (pre) {
+          var mount = document.createElement('div');
+          mount.className = 'mermaid-diagram';
+          return { pre: pre, mount: mount, src: pre.textContent || '' };
+        });
+        var seq = 0;
+        var renderGen = 0;
+        var lastKey = '';
+        function pageBg(fallback) {
+          var els = [document.body, document.documentElement];
+          for (var i = 0; i < els.length; i++) {
+            var c = els[i] && getComputedStyle(els[i]).backgroundColor;
+            if (c && c !== 'transparent' && c !== 'rgba(0, 0, 0, 0)') return c;
+          }
+          return fallback;
+        }
+        function render() {
+          var theme = root.getAttribute('data-theme');
+          var dark = theme === 'dark' || (!!(mq && mq.matches) && theme !== 'light');
+          var pal = dark ? CFG.palettes.dark : CFG.palettes.light;
+          var bg = pageBg(pal.bg);
+          var key = (dark ? 'd' : 'l') + '|' + bg;
+          if (key === lastKey) return;
+          lastKey = key;
+          var gen = ++renderGen;
+          var font = getComputedStyle(document.body).fontFamily || 'sans-serif';
+          var nat = { useMaxWidth: false };
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'strict',
+            theme: 'base',
+            flowchart: nat,
+            sequence: nat,
+            er: nat,
+            state: nat,
+            class: nat,
+            pie: nat,
+            gantt: nat,
+            journey: nat,
+            timeline: nat,
+            gitGraph: nat,
+            mindmap: nat,
+            xyChart: nat,
+            quadrantChart: nat,
+            sankey: nat,
+            c4: nat,
+            requirement: nat,
+            block: nat,
+            packet: nat,
+            kanban: nat,
+            architecture: nat,
+            radar: nat,
+            themeVariables: {
+              background: bg,
+              mainBkg: pal.surface,
+              primaryColor: pal.surface,
+              primaryTextColor: pal.text,
+              lineColor: pal.line,
+              primaryBorderColor: pal.border,
+              nodeBorder: pal.border,
+              clusterBorder: pal.border,
+              edgeLabelBackground: bg,
+              clusterBkg: 'rgba(127,127,127,0.07)',
+              titleColor: pal.text,
+              darkMode: dark,
+              rowOdd: bg,
+              rowEven: 'rgba(127,127,127,0.07)',
+              attributeBackgroundColorOdd: bg,
+              attributeBackgroundColorEven: 'rgba(127,127,127,0.07)',
+              fontSize: '16px',
+              fontFamily: font,
+            },
+            themeCSS:
+              '.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }',
+          });
+          items.forEach(function (it) {
+            var id = 'claude-mermaid-' + seq++;
+            mermaid.render(id, it.src).then(
+              function (r) {
+                if (gen !== renderGen) return;
+                var prev = it.pre.previousElementSibling;
+                if (prev && prev.className === 'mermaid-diagram' && prev !== it.mount) return;
+                it.mount.innerHTML = r.svg;
+                if (!it.mount.parentNode) it.pre.parentNode.insertBefore(it.mount, it.pre);
+                it.pre.style.display = 'none';
+              },
+              function () {
+                var scratch = document.getElementById(id);
+                if (scratch) scratch.parentNode.removeChild(scratch);
+                scratch = document.getElementById('d' + id);
+                if (scratch) scratch.parentNode.removeChild(scratch);
+                if (gen !== renderGen) return;
+                if (it.mount.parentNode) it.mount.parentNode.removeChild(it.mount);
+                it.pre.style.display = '';
+              },
+            );
+          });
+        }
+        render();
+        if (mq && mq.addEventListener) mq.addEventListener('change', render);
+        if (typeof MutationObserver !== 'undefined')
+          new MutationObserver(render).observe(root, {
+            attributes: true,
+            attributeFilter: ['data-theme'],
+          });
+      })();
+    </script>
+    <!--claude-mermaid-runtime-end-->
+  </body>
+</html>

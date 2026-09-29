@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <title>SPA &mdash; Capturekit Fixture</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+      }
+      h1 {
+        padding: 2rem 1.5rem 0;
+      }
+      main {
+        padding: 1.5rem;
+        display: grid;
+        gap: 0.5rem;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+    </nav>
+    <h1>Client-rendered page</h1>
+    <main id="app"><p>Loading&hellip;</p></main>
+    <script>
+      // PRD section 16 fixture: an SPA shell. Nothing is on screen at `load`;
+      // the content arrives in three staggered pushes, so `load` and even
+      // networkidle are both too early. Only mutation quiescence (FR-12) makes
+      // this capture trustworthy.
+      const app = document.getElementById('app');
+      const push = (delay, html) =>
+        setTimeout(() => {
+          const node = document.createElement('div');
+          node.className = 'card';
+          node.innerHTML = html;
+          app.appendChild(node);
+        }, delay);
+      setTimeout(() => (app.innerHTML = ''), 60);
+      push(250, 'Rendered first (250ms)');
+      push(500, 'Rendered second (500ms)');
+      push(900, 'Rendered third (900ms) — last mutation');
+    </script>
+  </body>
+</html>

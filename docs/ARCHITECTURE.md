@@ -18,20 +18,20 @@ CLI (src/cli.ts)
 
 ## Module map
 
-| file | owns | FR |
-|---|---|---|
-| `cli.ts` | command surface, exit codes, error presentation | FR-35, FR-39 |
-| `config.ts` | schema, defaults, file discovery, flag overrides | FR-11 |
-| `devices.ts` | built-in viewport profiles | FR-6 |
-| `jobs.ts` | the idempotent unit of work, slug de-duplication | FR-3 (partial) |
-| `run.ts` | planning, pool, failure accounting, packaging | FR-7, FR-29 |
-| `capture.ts` | context lifecycle, screenshot, retry ladder, traces | FR-8, FR-17, FR-24 |
-| `stabilize.ts` | ready detection, motion freeze, validators | FR-12/13/14/18 |
-| `manifest.ts` | the output contract | FR-29 |
-| `rundir.ts` | run folder + `.latest` pointer | FR-33 |
-| `log.ts` | console + JSONL sinks | section 7 |
-| `exit.ts` | exit codes and typed errors | FR-39 |
-| `clean.ts` | run retention | FR-35 |
+| file           | owns                                                | FR                 |
+| -------------- | --------------------------------------------------- | ------------------ |
+| `cli.ts`       | command surface, exit codes, error presentation     | FR-35, FR-39       |
+| `config.ts`    | schema, defaults, file discovery, flag overrides    | FR-11              |
+| `devices.ts`   | built-in viewport profiles                          | FR-6               |
+| `jobs.ts`      | the idempotent unit of work, slug de-duplication    | FR-3 (partial)     |
+| `run.ts`       | planning, pool, failure accounting, packaging       | FR-7, FR-29        |
+| `capture.ts`   | context lifecycle, screenshot, retry ladder, traces | FR-8, FR-17, FR-24 |
+| `stabilize.ts` | ready detection, motion freeze, validators          | FR-12/13/14/18     |
+| `manifest.ts`  | the output contract                                 | FR-29              |
+| `rundir.ts`    | run folder + `.latest` pointer                      | FR-33              |
+| `log.ts`       | console + JSONL sinks                               | section 7          |
+| `exit.ts`      | exit codes and typed errors                         | FR-39              |
+| `clean.ts`     | run retention                                       | FR-35              |
 
 ## Decisions worth knowing
 
@@ -46,7 +46,7 @@ run" fall out of the design instead of requiring special cases.
 
 **Every stabilization signal degrades to a warning.** Network never going idle,
 fonts hanging, a scroll that times out — each logs and continues. Only the
-*validators* can reject a frame, and they do so with a reason plus a retained
+_validators_ can reject a frame, and they do so with a reason plus a retained
 trace. A tool that fails a capture because a websocket stayed open is a tool that
 gets deleted from CI.
 

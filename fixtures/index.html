@@ -5,12 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Capturekit Fixture</title>
     <style>
-      :root { font-family: system-ui, sans-serif; }
-      body { margin: 0; color: #1a1a1a; }
-      header { padding: 3rem 1.5rem; background: #101c34; color: #fff; }
-      h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 3.5rem); }
-      main { padding: 1.5rem; }
-      .card { border: 1px solid #d8d8d8; border-radius: 12px; padding: 1rem; margin-block: 1rem; }
+      :root {
+        font-family: system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        color: #1a1a1a;
+      }
+      header {
+        padding: 3rem 1.5rem;
+        background: #101c34;
+        color: #fff;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 6vw, 3.5rem);
+      }
+      main {
+        padding: 1.5rem;
+      }
+      .card {
+        border: 1px solid #d8d8d8;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-block: 1rem;
+      }
       /* Deliberately animated: the stabilizer must freeze this (FR-14). */
       .pulsing {
         animation: pulse 1.2s ease-in-out infinite;
@@ -21,24 +40,55 @@
         color: #fff;
       }
       @keyframes pulse {
-        0%, 100% { opacity: 0.35; }
-        50% { opacity: 1; }
+        0%,
+        100% {
+          opacity: 0.35;
+        }
+        50% {
+          opacity: 1;
+        }
       }
       /* Deliberately lazy: only loads once scrolled near (FR-13). */
-      img[data-src] { background: #eee; min-height: 240px; width: 100%; display: block; }
-      .timestamp { font-variant-numeric: tabular-nums; color: #666; }
+      img[data-src] {
+        background: #eee;
+        min-height: 240px;
+        width: 100%;
+        display: block;
+      }
+      .timestamp {
+        font-variant-numeric: tabular-nums;
+        color: #666;
+      }
       /* Deliberately shifting layout: hydration replaces the skeleton (FR-12). */
-      .late { min-height: 40px; }
+      .late {
+        min-height: 40px;
+      }
     </style>
   </head>
   <body>
     <header>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/blog/">Blog</a>
+      </nav>
       <p class="timestamp">rendered <span id="now">pending</span></p>
       <h1>Capturekit Fixture</h1>
+      <p>
+        The demos below are linked from the body rather than the nav, so page ranking (FR-4) can be
+        checked against a page that is found but not prioritised.
+      </p>
+      <p>
+        <a href="/cookie/">Cookie banner</a> · <a href="/infinite/">infinite scroll</a> ·
+        <a href="/auth/">login wall</a>
+      </p>
     </header>
     <main>
       <div class="card">
-        <p>A page with motion, lazy media, and late DOM mutations &mdash; the three things that make a naive screenshot wrong.</p>
+        <p>
+          A page with motion, lazy media, and late DOM mutations &mdash; the three things that make
+          a naive screenshot wrong.
+        </p>
         <div class="pulsing">this box is animating forever</div>
       </div>
 
@@ -57,26 +107,29 @@
 
     <script>
       // Clock text changes every run: a determinism trap for masking later (FR-16).
-      document.getElementById("now").textContent = new Date().toISOString()
+      document.getElementById('now').textContent = new Date().toISOString();
 
       // IntersectionObserver lazy loading, the standard pattern full-page
       // captures miss without a scroll warm-up.
-      const observer = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-          const image = entry.target
-          image.src = image.dataset.src
-          observer.unobserve(image)
-        }
-      }, { rootMargin: "200px" })
-      document.querySelectorAll("img[data-src]").forEach((image) => observer.observe(image))
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const image = entry.target;
+            image.src = image.dataset.src;
+            observer.unobserve(image);
+          }
+        },
+        { rootMargin: '200px' },
+      );
+      document.querySelectorAll('img[data-src]').forEach((image) => observer.observe(image));
 
       // Late hydration: DOM keeps mutating well after `load`, which is exactly
       // what mutation quiescence has to wait out.
       setTimeout(() => {
-        const target = document.getElementById("late")
-        target.innerHTML = "<p>content injected 700ms after load</p>"
-      }, 700)
+        const target = document.getElementById('late');
+        target.innerHTML = '<p>content injected 700ms after load</p>';
+      }, 700);
     </script>
   </body>
 </html>
