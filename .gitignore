@@ -1,0 +1,13 @@
+node_modules/
+# capture output is the product, not source; never commit a run folder
+captures/
+captures-smoke/
+smoke.out.txt
+smoke.err.txt
+dist/
+build/
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
+!.env.example

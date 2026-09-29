@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blank &mdash; Capturekit Fixture</title>
+    <style>
+      /* Has real DOM content, so the DOM-level broken-page check must NOT reject
+         it. Only a pixel analysis can see that nothing is visible. */
+      body { margin: 0; background: #fff; }
+      p { color: #fff; font: 400 18px system-ui, sans-serif; padding: 2rem; }
+    </style>
+  </head>
+  <body>
+    <p>This paragraph is white on white. A screenshot of this page is a blank
+    frame and must be rejected by the validator (FR-18).</p>
+  </body>
+</html>

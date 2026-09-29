@@ -1,0 +1,32 @@
+{
+  "name": "capturekit",
+  "version": "0.0.1",
+  "description": "Autonomous visual capture for shipped software. CLI-first, CI-native.",
+  "keywords": ["screenshot", "capture", "playwright", "headless", "gallery", "ci"],
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "bin": {
+    "capturekit": "./bin/capturekit.mjs"
+  },
+  "files": ["bin", "src", "README.md", "docs"],
+  "scripts": {
+    "capturekit": "node bin/capturekit.mjs",
+    "doctor": "node bin/capturekit.mjs doctor",
+    "fixture": "node scripts/serve-fixtures.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "15.0.0",
+    "p-limit": "7.3.3",
+    "playwright": "1.63.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "typescript": "5.9.3"
+  }
+}

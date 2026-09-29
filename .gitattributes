@@ -1,0 +1,10 @@
+# Normalize line endings so a run folder produced on Windows and one produced on
+# a Linux CI runner differ only in content.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.zip binary
+*.mp4 binary
+*.gif binary
